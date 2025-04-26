@@ -1,8 +1,5 @@
 -- Data Cleaning 
 
--- https://www.kaggle.com/datasets/swaptr/layoffs-2022
-
-
 SELECT * 
 FROM layoffs;
 
@@ -26,13 +23,9 @@ SELECT *
 FROM layoffs_review;
 
 WITH duplicate_cte AS (SELECT *,
-		ROW_NUMBER() OVER(
-		PARTITION BY company, 
-	        industry, 
-	        total_laid_off,
-	        percentage_laid_off, 
-	         'date') AS row_num
-	FROM layoffs_review)
+						ROW_NUMBER() OVER(
+						PARTITION BY company, industry, total_laid_off, percentage_laid_off, 'date') AS row_num
+						FROM layoffs_review)
 SELECT *
 FROM duplicate_cte
 WHERE row_num > 1;
@@ -58,12 +51,7 @@ FROM layoffs_review2;
 INSERT INTO layoffs_review2
 SELECT *,
 		ROW_NUMBER() OVER(
-		PARTITION BY company,location,
-	        industry, 
-	        total_laid_off, 
-	        percentage_laid_off,
-	        'date',stage, country,
-	         funds_raised_millions) AS row_num
+		PARTITION BY company,location,industry, total_laid_off, percentage_laid_off, 'date',stage, country, funds_raised_millions) AS row_num
 FROM layoffs_review;
 
 
